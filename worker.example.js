@@ -20,10 +20,10 @@ const LOG_PREFIX = 'LOG:';
 const ADMIN_KEY = 'ADMIN_USERS';
 
 const authConfig = {
-    "siteName": "YOUR_SITE_NAME", // Website name
-    "client_id": "YOUR_CLIENT_ID.apps.googleusercontent.com", // Client id from Google Cloud Console
-    "client_secret": "YOUR_CLIENT_SECRET", // Client Secret from Google Cloud Console
-    "refresh_token": "YOUR_REFRESH_TOKEN", // Authorize token - Get from OAuth Playground
+    "siteName": "SS Bots", // Website name
+    "client_id": "693974798179-v1nbbppr9qdt3f7ervpg0hp9e52siase.apps.googleusercontent.com", // Client id from Google Cloud Console
+    "client_secret": "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", // Client Secret from Google Cloud Console
+    "refresh_token": "1//0gAGHssazC2ZICgYIARAAGBASNwF-L9Ira8uJyD-pKQQZUApvv9-ndwloLu5sEwjaKRHSl9cz9DD_g9Zx6hwTE3u1sQAs3eQgu-M", // Authorize token - Get from OAuth Playground
     "service_account": false, // true if you're using Service Account instead of user account
     "service_account_json": randomserviceaccount, // don't touch this one
     "files_list_page_size": 100,
@@ -62,8 +62,8 @@ const authConfig = {
     ],
     "roots": [
         {
-            "id": "YOUR_FOLDER_ID_1", // Get from Google Drive folder URL
-            "name": "📁 Folder 1",
+            "id": "1OjYV0qbs4bWjhYAIu0hWOPXzNkfeKvAT", // Get from Google Drive folder URL
+            "name": "SSBot",
             "username": "", "password": "", // Optional folder-level auth
             "protect_file_link": false
         },
