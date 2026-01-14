@@ -76,6 +76,12 @@ python3 -m http.server 8080
 ```
 Visit `http://localhost:8080` in your Android browser (like Chrome), and download token.pickle directly.
 
+### 7. To Get Secrets For Workers.js To Create Drive Index 
+
+```
+python3 generate_drive_token.py
+```
+
 
 
 ---
