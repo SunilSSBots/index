@@ -179,6 +179,14 @@ This step helps to:
 - Ensure refresh token exists
 - Debug authentication issues
 
+## Download the token.pickle File
+
+Now run a simple Python HTTP server to download the token from your mobile browser:
+```bash
+python3 -m http.server 8080
+```
+Visit http://localhost:8080 in your Android browser (like Chrome), and download token.pickle directly.
+
 ---
 
 ## 🟢 STEP 6 — Cloudflare Worker Setup
