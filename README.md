@@ -1,224 +1,205 @@
+# Google Drive Index & Token Generator
 
-<!-- =========================================================
-  Google Drive Index + token.pickle Generator (Single Repo)
-  Repo: https://github.com/SunilSSBots/google-drive-index
-========================================================== -->
+A single, clean repository to **generate Google OAuth tokens (`token.pickle`)** and **deploy a Google Drive Index using Cloudflare Workers**.
 
-<div align="center" style="padding: 24px 16px; border-radius: 18px; background: linear-gradient(135deg, #111827 0%, #0b1220 60%, #0f172a 100%); color: #e5e7eb; border: 1px solid #1f2937;">
-  <h1 style="margin: 0; font-size: 34px; letter-spacing: .5px;">Google Drive Index + Token Generator</h1>
-  <p style="margin: 10px 0 0; font-size: 15px; color: #cbd5e1;">
-    Ek hi repo se <b>token.pickle</b> generate karein aur usi access se <b>Google Drive Index</b> (Cloudflare Worker) deploy karein.
-  </p>
-
-  <p style="margin-top: 18px;">
-    <img alt="License" src="https://img.shields.io/badge/License-MIT-22c55e?style=for-the-badge">
-    <img alt="Python" src="https://img.shields.io/badge/Python-3.x-3b82f6?style=for-the-badge">
-    <img alt="Cloudflare Workers" src="https://img.shields.io/badge/Cloudflare-Workers-f97316?style=for-the-badge">
-  </p>
-</div>
-
-<br/>
-
-## ✨ What this repo does
-
-### 1) `token.pickle` Generator (Python)
-- `credentials.json` (Google OAuth client) ka use karke Google login + consent flow chalata hai
-- First time authorize karne par `token.pickle` create hota hai
-
-### 2) Google Drive Index (Cloudflare Workers)
-- `worker.example.js` ko Cloudflare Worker me deploy karke Drive listing/index ban sakta hai
-- Worker ko authenticate karne ke liye aapko OAuth details/refresh token chahiye (same credentials + token flow se)
+This project is designed for developers who want a **simple, reproducible, and professional workflow** to index Google Drive content without using third‑party panels.
 
 ---
 
-## 📁 Repo Structure
+## Features
 
-| File | Purpose |
-|------|---------|
-| `generate.py` | OAuth login flow run karke `token.pickle` banata hai |
-| `unlock_token.py` | `token.pickle` se useful auth values nikalne/print karne ke kaam aata hai (refresh token / token details) |
-| `worker.example.js` | Cloudflare Worker template (Drive Index) |
-| `README.md` | Documentation |
-
-> NOTE: `token.pickle` sensitive hota hai — public repo me upload **mat** karein.
+- Generate `token.pickle` using Google OAuth (Drive API)
+- Extract usable OAuth data from the token
+- Deploy a Google Drive Index using Cloudflare Workers
+- Works with:
+  - My Drive
+  - Shared Drives
+  - Specific folders
+- Clean and minimal setup
+- No external paid services required
 
 ---
 
-## ✅ Requirements
+## Repository Structure
 
-### A) Google Cloud Setup
-1. Google Cloud Console me **New Project** banayein
-2. **Google Drive API** enable karein
-3. **OAuth Consent Screen** configure karein
-4. **Create Credentials → OAuth Client ID**
-   - Type: **Desktop App** (recommended for local/termux auth flow)
-5. `credentials.json` download karein
-6. Us file ka naam **exactly** `credentials.json` rakhein
+```
+google-drive-index/
+│
+├── generate.py          # Generates token.pickle via OAuth login
+├── unlock_token.py      # Reads token.pickle and prints auth details
+├── worker.example.js    # Cloudflare Worker Drive Index template
+├── credentials.json    # Google OAuth credentials (NOT included)
+└── README.md
+```
 
-### B) System Requirements
-- Python 3.x
+---
+
+## Requirements
+
+### System
+- Python 3.8+
 - pip
+- Internet access
+
+### Google Cloud
+- Google Cloud Project
+- Google Drive API enabled
+- OAuth Client ID (Desktop App)
+
+### Cloudflare
+- Cloudflare account
+- Workers enabled
 
 ---
 
-## 🚀 Step-by-step: `token.pickle` Generate (Termux / Linux / Windows)
+## Step 1: Google Cloud Configuration
 
-### 1) Repo clone
+1. Open **Google Cloud Console**
+2. Create a new project
+3. Enable **Google Drive API**
+4. Configure **OAuth Consent Screen**
+5. Create **OAuth Client ID**
+   - Application type: **Desktop App**
+6. Download the credentials file
+7. Rename it to:
+
+```
+credentials.json
+```
+
+Place it inside the project directory.
+
+---
+
+## Step 2: Generate `token.pickle`
+
+### Clone Repository
+
 ```bash
 git clone https://github.com/SunilSSBots/google-drive-index
 cd google-drive-index
+```
 
-2) Python deps install
+### Install Dependencies
+
+```bash
 pip install google-auth google-auth-oauthlib google-auth-httplib2
+```
 
-3) credentials.json place karein
+### Run Token Generator
 
-credentials.json ko isi folder me copy kar dein:
-
-google-drive-index/credentials.json
-
-4) Token generate karein
+```bash
 python3 generate.py
+```
 
+### Authorization Flow
 
-Expected flow:
+- A Google login URL will appear
+- Open it in a browser
+- Sign in to your Google account
+- Allow Drive permissions
+- On success, a file will be created:
 
-Terminal me ek URL aayega
+```
+token.pickle
+```
 
-Browser me open karke Google login karein
+This file stores your OAuth access and refresh tokens.
 
-Allow permissions
+---
 
-Success message: “authentication flow has completed…”
+## Step 3: Extract Token Details (Optional but Recommended)
 
-5) Output verify
+To use the same credentials for Cloudflare Worker authentication:
 
-Isi folder me file ban jaani chahiye:
-
-✅ token.pickle
-
-📲 (Android/Termux) token.pickle ko browser se download ka easy method
-
-Agar aap mobile me kaam kar rahe ho aur file share/download karni ho:
-
-python3 -m http.server 8080
-
-
-Phir browser me open:
-
-http://localhost:8080
-
-Waha se token.pickle download kar sakte ho.
-
-🔓 Step-by-step: token.pickle se Worker/Index ke liye values nikalna
-
-Cloudflare Worker ko usually in cheezon ki zarurat hoti hai:
-
-OAuth Client ID
-
-OAuth Client Secret
-
-Refresh Token
-
-Drive Root/Folder/Shared Drive ID
-
-1) Token details extract/run
+```bash
 python3 unlock_token.py
+```
 
+This script helps you verify:
+- Token validity
+- Refresh token availability
+- Linked Google account
 
-Goal: is script se aapko refresh token (ya auth details) mil jaayengi jinko aap Worker me secrets/vars me set karoge.
+---
 
-Tip: Agar output me refresh token / client details clearly na milein, ensure karein:
+## Step 4: Deploy Google Drive Index (Cloudflare Worker)
 
-credentials.json same folder me hai
+### Create Worker
 
-token.pickle same folder me hai
+1. Go to **Cloudflare Dashboard**
+2. Open **Workers & Pages**
+3. Create a new Worker
+4. Open Worker editor
 
-aapne correct Google account se authorize kiya hai
+### Add Worker Code
 
-🌐 Step-by-step: Google Drive Index Deploy (Cloudflare Workers)
-1) Cloudflare account + Workers setup
+- Open `worker.example.js`
+- Copy its content
+- Paste it into the Worker editor
+- Save
 
-Cloudflare dashboard → Workers & Pages
+---
 
-Create Worker
+## Step 5: Configure Worker Environment Variables
 
-2) Worker code paste
+In **Worker Settings → Variables → Secrets**, add:
 
-Repo ka worker.example.js open karein
+| Variable Name | Description |
+|--------------|------------|
+| CLIENT_ID | Google OAuth Client ID |
+| CLIENT_SECRET | Google OAuth Client Secret |
+| REFRESH_TOKEN | Refresh token from OAuth |
+| ROOT_ID | Drive root / folder / shared drive ID |
 
-Uska content copy karke Cloudflare Worker editor me paste karein
+### ROOT_ID Examples
 
-Save
+| Use Case | Value |
+|--------|------|
+| My Drive | `root` |
+| Shared Drive | Shared Drive ID |
+| Folder Index | Folder ID |
 
-3) Required config set karein (ENV/Secrets)
+---
 
-Cloudflare Worker me aapko env vars / secrets set karne honge (names worker script me defined hote hain). Typical pattern:
+## Step 6: Deploy & Verify
 
-Workers → Settings → Variables
+- Click **Deploy**
+- Open the Worker URL
+- Your Google Drive index should load
 
-Add Secrets (recommended)
+---
 
-CLIENT_ID
+## Security Notes
 
-CLIENT_SECRET
+- **Never upload `credentials.json` or `token.pickle` to public repositories**
+- Use **Cloudflare Secrets**, not plain variables
+- Revoke tokens immediately if leaked
 
-REFRESH_TOKEN
+---
 
-Also set Drive target:
+## Troubleshooting
 
-ROOT_ID
+### `token.pickle` not generated
+- Ensure `credentials.json` exists
+- Ensure Drive API is enabled
+- Complete browser authorization fully
 
-My Drive root ke liye aksar root
+### Worker shows Unauthorized / Blank
+- Incorrect refresh token
+- Wrong CLIENT_ID / CLIENT_SECRET
+- Incorrect ROOT_ID
+- Variable name mismatch in worker file
 
-Shared Drive/Folder ke liye uska ID
+---
 
-NOTE: Exact variable names worker.example.js ke andar defined hote hain.
-Aapko wahi names rakhne hain jo script expect karta hai.
+## License
 
-4) Deploy
+MIT License
 
-Save & Deploy
+---
 
-Worker URL open karke verify karein
+## Disclaimer
 
-🧠 How to choose ROOT_ID (Important)
-
-My Drive (Personal): root
-
-Shared Drive: Shared Drive ka root ID
-
-Specific Folder: Folder ID
-
-Best practice: Shared Drive ya root use karein; folder-only mode me search limitations ho sakti hain (Drive API behavior).
-
-🔒 Security Notes (Must Read)
-
-credentials.json + token.pickle private rakhein
-
-Public GitHub repo me upload na karein
-
-Cloudflare Worker secrets hamesha Secrets me store karein (plain variables me nahi)
-
-🧰 Troubleshooting
-token.pickle create nahi ho raha
-
-Ensure credentials.json same folder me hai
-
-Ensure Google Drive API enabled hai
-
-First run me browser consent complete karein
-
-Worker blank / unauthorized
-
-Refresh token / client id/secret wrong hai
-
-Wrong ROOT_ID
-
-Secrets names mismatch (worker file me expected names check karein)
-
-📜 License
-
-MIT
-
-<br/> <div align="center" style="color:#94a3b8;"> Made for easy OAuth token generation + Drive Index deployment. </div> ```
+This project is for educational and personal use.  
+You are responsible for complying with Google Drive and Cloudflare terms of service.
