@@ -20,7 +20,7 @@ const LOG_PREFIX = 'LOG:';
 const ADMIN_KEY = 'ADMIN_USERS';
 
 const authConfig = {
-    "siteName": "SS Bots", // Your Custom Website name
+    "siteName": "SS Bots", // Your Website name
     "client_id": "", // Your Client id from Google Cloud Console
     "client_secret": "", // Your Client Secret from Google Cloud Console
     "refresh_token": "", // Your Authorize token - Get from OAuth Playground
@@ -62,7 +62,7 @@ const authConfig = {
     ],
     "roots": [
         {
-            "id": "", // Get from Google Drive folder URL
+            "id": "8iugu89y09oioi6676", // Get from Google Drive folder URL
             "name": "SSBot",
             "username": "", "password": "", // Optional folder-level auth
             "protect_file_link": false
@@ -2303,7 +2303,7 @@ const homepage = `<!DOCTYPE html>
                 <a href="/" class="footer-link">Home</a>
                 <a href="/about" class="footer-link">About</a>
                 <a href="${uiConfig.contact_link}" target="_blank" class="footer-link">Contact</a>
-                <a href="https://github.com/" target="_blank" class="footer-link">GitHub</a>
+                <a href="https://github.com/SunilSSBots/google-drive-index" target="_blank" class="footer-link">GitHub</a>
             </div>
             <p class="footer-text" style="opacity: 0.7;">
                 Powered by <a href="https://www.npmjs.com/package/@googledrive/index" target="_blank">GDI</a>
@@ -5503,7 +5503,7 @@ const aboutus_html = `<!DOCTYPE html>
                     </div>
                     <div class="contact-info">
                         <h4>GitHub Repository</h4>
-                        <p><a href="https://github.com/" target="_blank">SSBots Drive-Index</a></p>
+                        <p><a href="https://github.com/SunilSSBots/google-drive-index" target="_blank">SSBots Drive-Index</a></p>
                     </div>
                 </div>
 
@@ -6299,7 +6299,7 @@ const contact_html = `<!DOCTYPE html>
                     </div>
                 </a>
                 
-                <a href="https://github.com/" target="_blank" class="contact-method">
+                <a href="https://github.com/SunilSSBots/google-drive-index" target="_blank" class="contact-method">
                     <div class="method-icon"><i class="bi bi-github"></i></div>
                     <div class="method-info">
                         <h4>GitHub</h4>
